@@ -49,18 +49,27 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .banner { background: var(--red-bg); color: var(--red); border-radius: 12px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; font-weight: 500; }
 .banner.info { background: var(--card); color: var(--ink-soft); border: 1px solid var(--line); }
 
-/* Resumo */
-.summary { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); padding: 14px 18px; margin-bottom: 16px; display: flex; gap: 22px; }
+.summary { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); padding: 14px 18px; margin-bottom: 14px; display: flex; gap: 22px; }
 .summary > div { flex: 1; }
 .summary small { color: var(--ink-soft); font-size: 13px; display: block; font-weight: 500; }
 .summary .num { font-size: 22px; font-weight: 700; display: block; margin-top: 2px; }
 
-/* Pagador padrão */
+.settle { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 16px; overflow: hidden; }
+.settle h2 { font-size: 12px; font-weight: 700; padding: 14px 16px 6px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .06em; margin: 0; font-family: "Figtree", sans-serif; }
+.settle-row { display: flex; align-items: center; gap: 8px; padding: 12px 16px; width: 100%; background: none; border: 0; border-top: 1px solid var(--line); text-align: left; }
+.settle-row:hover { background: var(--bg); }
+.settle-row:first-of-type { border-top: 0; }
+.settle-from { font-weight: 600; }
+.settle-arrow { color: var(--ink-soft); }
+.settle-to { font-weight: 700; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.settle-amt { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 18px; white-space: nowrap; }
+.settle-empty { padding: 16px; text-align: center; color: var(--green); font-weight: 700; }
+.settle-hint { padding: 0 16px 12px; font-size: 12px; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 8px; }
+
 .default-payer { margin-bottom: 16px; }
 .default-payer small { color: var(--ink-soft); font-size: 13px; font-weight: 500; display: block; margin: 0 0 8px 4px; }
 .default-payer .chips .chip { font-size: 14px; padding: 6px 12px; }
 
-/* Cards de pessoa */
 .person { background: var(--card); border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); border-left: 7px solid var(--line); overflow: hidden; }
 .person.debt { border-left-color: var(--red); }
 .person.credit { border-left-color: var(--green); }
@@ -83,7 +92,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .pc-toggle { width: 100%; background: none; border: 0; border-top: 1px solid var(--line); padding: 10px; font-weight: 600; font-size: 14px; color: var(--ink-soft); text-align: center; margin-top: 12px; }
 .pc-toggle:hover { background: var(--bg); }
 
-/* Detalhes */
 .detail { padding: 0 14px 14px; border-top: 1px dashed var(--line); }
 .detail h3 { font-size: 14px; color: var(--ink-soft); font-weight: 600; margin: 12px 0 6px; font-family: "Figtree", sans-serif; }
 .drow { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; font-size: 15px; }
@@ -95,7 +103,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .btn.danger { background: transparent; color: var(--red); border: 1.5px solid var(--red); }
 .btn.quiet { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
 
-/* Dias */
 .day { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 14px; overflow: hidden; }
 .day-head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 16px 8px; }
 .day-head h3 { font-size: 19px; font-weight: 700; }
@@ -150,7 +157,13 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   <main id="view-resumo">
     <section class="summary" aria-label="Resumo">
       <div><small>Total gasto</small><span class="num" id="totalGasto">R$ 0,00</span></div>
-      <div><small>Falta receber</small><span class="num" id="totalFalta">R$ 0,00</span></div>
+      <div><small>Falta acertar</small><span class="num" id="totalFalta">R$ 0,00</span></div>
+    </section>
+
+    <section class="settle hidden" id="settleSection" aria-label="Acerto de contas">
+      <h2>Acerto de contas</h2>
+      <div id="settleList"></div>
+      <div class="settle-hint">Toque numa linha para copiar a chave Pix de quem vai receber.</div>
     </section>
 
     <div class="default-payer">
@@ -269,7 +282,7 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   }
   function toast(msg) {
     var t = $("toast"); t.textContent = msg; t.classList.add("show");
-    clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove("show"); }, 2200);
+    clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove("show"); }, 2400);
   }
   function validPerson(p) { return PEOPLE.indexOf(p) > -1; }
   function ensurePixes() {
@@ -320,6 +333,27 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     });
     return { bal: bal, perDay: perDay, total: total };
   }
+  /* Calcula transferências mínimas entre quem deve e quem tem a receber */
+  function computeTransfers(c) {
+    var creds = [], debts = [];
+    PEOPLE.forEach(function (p) {
+      var b = c.bal[p] || 0;
+      if (b > 0) creds.push({ p: p, v: b });
+      else if (b < 0) debts.push({ p: p, v: -b });
+    });
+    creds.sort(function (a, b) { return b.v - a.v; });
+    debts.sort(function (a, b) { return b.v - a.v; });
+    var out = [], i = 0, j = 0;
+    while (i < debts.length && j < creds.length) {
+      var amt = Math.min(debts[i].v, creds[j].v);
+      if (amt > 0) out.push({ from: debts[i].p, to: creds[j].p, cents: amt });
+      debts[i].v -= amt;
+      creds[j].v -= amt;
+      if (debts[i].v === 0) i++;
+      if (creds[j].v === 0) j++;
+    }
+    return out;
+  }
 
   /* ---------- persistência ---------- */
   var queue = Promise.resolve();
@@ -360,25 +394,30 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   }
   function writeExpense(id, data) {
     data.id = id;
-    if (mode === "shared") return enqueue(function () { return db.collection("expenses").doc(id).set(data); });
     var i = S.expenses.findIndex(function (x) { return x.id === id; });
     if (i > -1) S.expenses[i] = data; else S.expenses.push(data);
-    saveLocal(); renderAll(); return Promise.resolve();
+    saveLocal(); renderAll();
+    if (mode === "shared") return enqueue(function () { return db.collection("expenses").doc(id).set(data); });
+    return Promise.resolve();
   }
   function removeExpense(id) {
-    if (mode === "shared") return enqueue(function () { return db.collection("expenses").doc(id).delete(); });
     S.expenses = S.expenses.filter(function (x) { return x.id !== id; });
-    saveLocal(); renderAll(); return Promise.resolve();
+    saveLocal(); renderAll();
+    if (mode === "shared") return enqueue(function () { return db.collection("expenses").doc(id).delete(); });
+    return Promise.resolve();
   }
   function writePayment(id, data) {
     data.id = id;
+    S.payments.push(data);
+    saveLocal(); renderAll();
     if (mode === "shared") return enqueue(function () { return db.collection("payments").doc(id).set(data); });
-    S.payments.push(data); saveLocal(); renderAll(); return Promise.resolve();
+    return Promise.resolve();
   }
   function removePayment(id) {
-    if (mode === "shared") return enqueue(function () { return db.collection("payments").doc(id).delete(); });
     S.payments = S.payments.filter(function (x) { return x.id !== id; });
-    saveLocal(); renderAll(); return Promise.resolve();
+    saveLocal(); renderAll();
+    if (mode === "shared") return enqueue(function () { return db.collection("payments").doc(id).delete(); });
+    return Promise.resolve();
   }
   function guardWrite() {
     if (readOnly) { toast("Você só pode ver. Peça acesso de colaborador."); return false; }
@@ -403,6 +442,25 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     var falta = 0;
     PEOPLE.forEach(function (p) { if (c.bal[p] < 0) falta += -c.bal[p]; });
     $("totalFalta").textContent = brl(falta);
+  }
+  function renderSettle(c) {
+    var transfers = computeTransfers(c);
+    var sec = $("settleSection"), list = $("settleList");
+    if (!transfers.length) {
+      if (!S.expenses.length) { sec.classList.add("hidden"); return; }
+      sec.classList.remove("hidden");
+      list.innerHTML = '<div class="settle-empty">Tudo acertado! 🎉</div>';
+      return;
+    }
+    sec.classList.remove("hidden");
+    list.innerHTML = transfers.map(function (t) {
+      return '<button type="button" class="settle-row" data-settle-to="' + esc(t.to) + '" data-settle-from="' + esc(t.from) + '" data-settle-cents="' + t.cents + '">' +
+        '<span class="settle-from">' + esc(t.from) + '</span>' +
+        '<span class="settle-arrow">→</span>' +
+        '<span class="settle-to">' + esc(t.to) + '</span>' +
+        '<span class="settle-amt">' + brl(t.cents) + '</span>' +
+      '</button>';
+    }).join("");
   }
   function renderMainChips() {
     var main = S.config.mainPayer;
@@ -491,7 +549,7 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   }
   function renderAll() {
     var c = compute();
-    renderSync(); renderBanner(); renderSummary(c); renderMainChips(); renderPeople(c); renderDays();
+    renderSync(); renderBanner(); renderSummary(c); renderSettle(c); renderMainChips(); renderPeople(c); renderDays();
   }
 
   /* ---------- sheets ---------- */
@@ -580,6 +638,16 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     renderAll(); writeConfig();
   });
 
+  $("settleList").addEventListener("click", function (ev) {
+    var row = ev.target.closest("[data-settle-to]");
+    if (!row) return;
+    var to = row.getAttribute("data-settle-to");
+    var cents = parseInt(row.getAttribute("data-settle-cents"), 10) || 0;
+    var v = (S.config.pixes[to] || "").trim();
+    if (!v) { toast("Cadastre a chave Pix de " + to + " no card abaixo"); return; }
+    copyText(v, "Pix de " + to + " copiado — envie " + brl(cents));
+  });
+
   /* pix: atualiza memória ao digitar, salva no blur/Enter */
   $("peopleList").addEventListener("focusin", function (ev) {
     var inp = ev.target.closest("[data-pix]");
@@ -638,7 +706,11 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   $("expCancel").addEventListener("click", function () { closeSheet("ovExpense"); });
   $("expSave").addEventListener("click", saveExpense);
   $("expDelete").addEventListener("click", function () {
-    if (editingId && confirm("Excluir este gasto?")) { var id = editingId; closeSheet("ovExpense"); removeExpense(id).then(function () { toast("Gasto excluído"); }); }
+    if (editingId && confirm("Excluir este gasto?")) {
+      var id = editingId; editingId = null;
+      closeSheet("ovExpense");
+      removeExpense(id).then(function () { toast("Gasto excluído"); });
+    }
   });
   $("payCancel").addEventListener("click", function () { closeSheet("ovPay"); });
   $("paySave").addEventListener("click", savePay);
