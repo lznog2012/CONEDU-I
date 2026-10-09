@@ -431,12 +431,6 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     else if (mode === "local") el.innerHTML = '<span class="dot off"></span><span>Só neste aparelho</span>';
     else el.innerHTML = '<span class="dot off"></span><span>Carregando…</span>';
   }
-  function renderBanner() {
-    var b = $("banner"), html = "";
-    if (readOnly) html = '<div class="banner">Você está só visualizando. Peça para quem criou o site te dar acesso de colaborador para lançar gastos.</div>';
-    else if (mode === "local") html = '<div class="banner info">Os dados ficam só neste aparelho. Para o grupo ver os mesmos valores, abra o link compartilhado pelo Claude.</div>';
-    b.innerHTML = html;
-  }
   function renderSummary(c) {
     $("totalGasto").textContent = brl(c.total);
     var falta = 0;
