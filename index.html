@@ -9,20 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #EEF3F8;
-  --card: #FFFFFF;
-  --ink: #14213D;
-  --ink-soft: #5B6B86;
-  --line: #DCE4EE;
-  --brand: #14213D;
-  --brand-ink: #FFFFFF;
-  --red: #C9243F;
-  --red-bg: #FDECEF;
-  --green: #12805A;
-  --green-bg: #E5F6EE;
-  --ticket: #14213D;
-  --ticket-ink: #F4F7FB;
-  --ticket-soft: #A9B6CE;
+  --bg: #EEF3F8; --card: #FFFFFF; --ink: #14213D; --ink-soft: #5B6B86; --line: #DCE4EE;
+  --brand: #14213D; --brand-ink: #FFFFFF;
+  --red: #C9243F; --red-bg: #FDECEF; --green: #12805A; --green-bg: #E5F6EE;
   --shadow: 0 1px 2px rgba(20,33,61,.06), 0 6px 18px rgba(20,33,61,.07);
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 0px);
@@ -33,7 +22,6 @@
     --bg: #0C1322; --card: #151F36; --ink: #EAF0FA; --ink-soft: #93A3C1; --line: #26334F;
     --brand: #EAF0FA; --brand-ink: #0C1322;
     --red: #FF7A8D; --red-bg: #3A1B28; --green: #3FDCA4; --green-bg: #11332B;
-    --ticket: #1D2B4B; --ticket-ink: #F4F7FB; --ticket-soft: #9FB0D0;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
   }
 }
@@ -41,16 +29,13 @@
   --bg: #0C1322; --card: #151F36; --ink: #EAF0FA; --ink-soft: #93A3C1; --line: #26334F;
   --brand: #EAF0FA; --brand-ink: #0C1322;
   --red: #FF7A8D; --red-bg: #3A1B28; --green: #3FDCA4; --green-bg: #11332B;
-  --ticket: #1D2B4B; --ticket-ink: #F4F7FB; --ticket-soft: #9FB0D0;
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
 }
 html { scroll-padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
 *, *::before, *::after { box-sizing: border-box; }
-body {
-  margin: 0; background: var(--bg); color: var(--ink);
+body { margin: 0; background: var(--bg); color: var(--ink);
   font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px; line-height: 1.45;
-}
+  font-size: 16px; line-height: 1.45; }
 h1, h2, h3, .num { font-family: "Bricolage Grotesque", "Figtree", system-ui, sans-serif; margin: 0; }
 button { font: inherit; color: inherit; cursor: pointer; }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; border-radius: 8px; }
@@ -64,52 +49,46 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .banner { background: var(--red-bg); color: var(--red); border-radius: 12px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; font-weight: 500; }
 .banner.info { background: var(--card); color: var(--ink-soft); border: 1px solid var(--line); }
 
-/* Ticket do Pix principal */
-.ticket { background: var(--ticket); color: var(--ticket-ink); border-radius: 22px; position: relative; box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
-.ticket-top { padding: 18px 20px 16px; }
-.ticket small { color: var(--ticket-soft); font-size: 13px; font-weight: 500; }
-.payer-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 2px; }
-.payer-name { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
-.btn-ghost { background: rgba(255,255,255,.12); color: var(--ticket-ink); border: 0; border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; }
-.btn-ghost:hover { background: rgba(255,255,255,.2); }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.ticket .chips { margin-top: 12px; }
-.chip { border: 1.5px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 15px; }
-.chip[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
-.ticket .chip { background: transparent; color: var(--ticket-ink); border-color: rgba(255,255,255,.3); }
-.ticket .chip[aria-pressed="true"] { background: var(--ticket-ink); color: var(--ticket); border-color: var(--ticket-ink); }
-.tear { position: relative; height: 0; border-top: 2px dashed rgba(255,255,255,.22); margin: 0 18px; }
-.tear::before, .tear::after { content: ""; position: absolute; top: -13px; width: 24px; height: 24px; border-radius: 50%; background: var(--bg); }
-.tear::before { left: -30px; } .tear::after { right: -30px; }
-.ticket-bottom { padding: 16px 20px 18px; }
-.pix-line { display: flex; gap: 8px; margin-top: 6px; }
-.pix-line input { flex: 1; min-width: 0; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.2); color: var(--ticket-ink); border-radius: 12px; padding: 11px 12px; font: inherit; font-size: 15px; }
-.pix-line input::placeholder { color: var(--ticket-soft); }
-.pix-line input:focus-visible { outline-color: var(--ticket-ink); }
-.btn-copy { background: var(--ticket-ink); color: var(--ticket); border: 0; border-radius: 12px; padding: 0 16px; font-weight: 700; }
-.totals { display: flex; gap: 22px; margin-top: 16px; }
-.totals div { flex: 1; }
-.totals .num { font-size: 22px; font-weight: 700; display: block; }
+/* Resumo */
+.summary { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); padding: 14px 18px; margin-bottom: 16px; display: flex; gap: 22px; }
+.summary > div { flex: 1; }
+.summary small { color: var(--ink-soft); font-size: 13px; display: block; font-weight: 500; }
+.summary .num { font-size: 22px; font-weight: 700; display: block; margin-top: 2px; }
 
-/* Lista de devedores */
-.section-title { font-size: 18px; font-weight: 700; margin: 0 2px 10px; }
-.person { background: var(--card); border-radius: 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 7px solid var(--line); overflow: hidden; }
-.person.debt { border-left-color: var(--red); background: var(--red-bg); }
-.person.ok { border-left-color: var(--green); background: var(--green-bg); }
-.person-head { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 12px; background: none; border: 0; text-align: left; }
-.avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 17px; background: var(--card); color: var(--ink); flex: none; font-family: "Bricolage Grotesque", sans-serif; }
-.pname { font-weight: 700; font-size: 17px; }
-.pstatus { font-size: 14px; font-weight: 600; }
-.debt .pstatus, .debt .amt { color: var(--red); }
-.ok .pstatus, .ok .amt { color: var(--green); }
-.grow { flex: 1; min-width: 0; }
-.amt { font-family: "Bricolage Grotesque", sans-serif; font-size: 24px; font-weight: 800; white-space: nowrap; }
-.chev { transition: transform .15s; color: var(--ink-soft); flex: none; }
-.person.open .chev { transform: rotate(180deg); }
+/* Pagador padrão */
+.default-payer { margin-bottom: 16px; }
+.default-payer small { color: var(--ink-soft); font-size: 13px; font-weight: 500; display: block; margin: 0 0 8px 4px; }
+.default-payer .chips .chip { font-size: 14px; padding: 6px 12px; }
+
+/* Cards de pessoa */
+.person { background: var(--card); border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow); border-left: 7px solid var(--line); overflow: hidden; }
+.person.debt { border-left-color: var(--red); }
+.person.credit { border-left-color: var(--green); }
+.person.settled { border-left-color: var(--line); }
+.pc-head { display: flex; align-items: center; gap: 12px; padding: 14px 14px 10px 12px; }
+.avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 17px; background: var(--bg); color: var(--ink); flex: none; font-family: "Bricolage Grotesque", sans-serif; }
+.pc-head .grow { flex: 1; min-width: 0; }
+.pc-head .pname { font-weight: 700; font-size: 17px; line-height: 1.2; }
+.pc-head .pname small { font-weight: 500; color: var(--ink-soft); font-size: 13px; }
+.pc-head .pstatus { font-size: 14px; font-weight: 600; color: var(--ink-soft); }
+.person.debt .pstatus, .person.debt .amt { color: var(--red); }
+.person.credit .pstatus, .person.credit .amt { color: var(--green); }
+.amt { font-family: "Bricolage Grotesque", sans-serif; font-size: 22px; font-weight: 800; white-space: nowrap; }
+.pc-body { padding: 0 14px 14px; }
+.pix-line { display: flex; gap: 8px; }
+.pix-line input { flex: 1; min-width: 0; background: var(--bg); border: 1.5px solid var(--line); color: var(--ink); border-radius: 12px; padding: 10px 12px; font: inherit; font-size: 15px; }
+.pix-line input::placeholder { color: var(--ink-soft); }
+.pix-line input:focus-visible { outline-color: var(--ink); }
+.btn-copy { background: var(--brand); color: var(--brand-ink); border: 0; border-radius: 12px; padding: 0 16px; font-weight: 700; font-size: 14px; }
+.pc-toggle { width: 100%; background: none; border: 0; border-top: 1px solid var(--line); padding: 10px; font-weight: 600; font-size: 14px; color: var(--ink-soft); text-align: center; margin-top: 12px; }
+.pc-toggle:hover { background: var(--bg); }
+
+/* Detalhes */
 .detail { padding: 0 14px 14px; border-top: 1px dashed var(--line); }
 .detail h3 { font-size: 14px; color: var(--ink-soft); font-weight: 600; margin: 12px 0 6px; font-family: "Figtree", sans-serif; }
 .drow { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; font-size: 15px; }
-.drow .neg { color: var(--red); font-weight: 700; } .drow .pos { color: var(--green); font-weight: 700; }
+.drow .neg { color: var(--red); font-weight: 700; }
+.drow .pos { color: var(--green); font-weight: 700; }
 .drow .x { background: none; border: 0; color: var(--ink-soft); padding: 0 6px; font-size: 16px; }
 .btn { background: var(--brand); color: var(--brand-ink); border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; font-size: 16px; }
 .btn.block { width: 100%; margin-top: 12px; }
@@ -119,7 +98,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* Dias */
 .day { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 14px; overflow: hidden; }
 .day-head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 16px 8px; }
-.day-head h3 { font-size: 19px; font-weight: 700; text-transform: capitalize-first; }
+.day-head h3 { font-size: 19px; font-weight: 700; }
 .day-head .num { font-size: 17px; font-weight: 700; color: var(--ink-soft); }
 .exp { width: 100%; display: flex; justify-content: space-between; gap: 12px; text-align: left; background: none; border: 0; border-top: 1px solid var(--line); padding: 12px 16px; }
 .exp:hover { background: var(--bg); }
@@ -130,14 +109,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .empty { text-align: center; color: var(--ink-soft); padding: 34px 16px; background: var(--card); border-radius: 16px; border: 1.5px dashed var(--line); }
 .empty strong { display: block; color: var(--ink); font-size: 17px; margin-bottom: 4px; }
 
-/* Barra inferior */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1.5px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 15px; }
+.chip[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+
 .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--line); padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 20; }
 .bar-in { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
 .tab { background: none; border: 0; padding: 8px; border-radius: 12px; font-weight: 600; color: var(--ink-soft); font-size: 15px; }
 .tab[aria-current="page"] { color: var(--ink); background: var(--bg); }
 .fab { background: var(--brand); color: var(--brand-ink); border: 0; border-radius: 999px; padding: 13px 20px; font-weight: 800; font-size: 16px; box-shadow: var(--shadow); }
 
-/* Sheet */
 .overlay { position: fixed; inset: 0; background: rgba(8,14,28,.55); z-index: 40; display: none; align-items: flex-end; justify-content: center; }
 .overlay.show { display: flex; }
 .sheet { background: var(--card); width: 100%; max-width: 560px; border-radius: 22px 22px 0 0; padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px)); max-height: 92%; overflow-y: auto; }
@@ -167,35 +148,21 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   <div id="banner"></div>
 
   <main id="view-resumo">
-    <section class="ticket" aria-label="Pix principal">
-      <div class="ticket-top">
-        <small>Quem fez o Pix principal</small>
-        <div class="payer-row">
-          <div class="payer-name" id="payerName">Luiza</div>
-          <button class="btn-ghost" id="payerChange" type="button" aria-expanded="false">Trocar</button>
-        </div>
-        <div class="chips hidden" id="payerChips"></div>
-      </div>
-      <div class="tear" aria-hidden="true"></div>
-      <div class="ticket-bottom">
-        <small><label for="pixInput">Chave Pix dela (para o grupo mandar o dinheiro)</label></small>
-        <div class="pix-line">
-          <input id="pixInput" type="text" autocomplete="off" placeholder="CPF, e-mail, telefone ou chave aleatória" enterkeyhint="done">
-          <button class="btn-copy" id="pixCopy" type="button">Copiar</button>
-        </div>
-        <div class="totals">
-          <div><small>Total gasto</small><span class="num" id="totalGasto">R$ 0,00</span></div>
-          <div><small>Falta receber</small><span class="num" id="totalFalta">R$ 0,00</span></div>
-        </div>
-      </div>
+    <section class="summary" aria-label="Resumo">
+      <div><small>Total gasto</small><span class="num" id="totalGasto">R$ 0,00</span></div>
+      <div><small>Falta receber</small><span class="num" id="totalFalta">R$ 0,00</span></div>
     </section>
 
-    <h2 class="section-title" id="debtTitle">Quem deve</h2>
-    <div id="debtList"></div>
+    <div class="default-payer">
+      <small>Pagador padrão ao criar gasto</small>
+      <div class="chips" id="mainChips"></div>
+    </div>
+
+    <div id="peopleList"></div>
   </main>
 
   <main id="view-dias" class="hidden">
-    <h2 class="section-title">Gastos por dia</h2>
+    <h2 class="section-title" style="margin:0 2px 10px;font-size:18px;font-weight:700">Gastos por dia</h2>
     <div id="daysList"></div>
   </main>
 </div>
@@ -208,7 +175,6 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   </div>
 </nav>
 
-<!-- Sheet: gasto -->
 <div class="overlay" id="ovExpense" role="dialog" aria-modal="true" aria-labelledby="expTitle">
   <div class="sheet">
     <h2 id="expTitle">Novo gasto</h2>
@@ -232,7 +198,6 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   </div>
 </div>
 
-<!-- Sheet: pagamento -->
 <div class="overlay" id="ovPay" role="dialog" aria-modal="true" aria-labelledby="payTitle">
   <div class="sheet">
     <h2 id="payTitle">Registrar pagamento</h2>
@@ -257,8 +222,8 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   var LS_KEY = "contas-viagem-v1";
   var $ = function (id) { return document.getElementById(id); };
 
-  var S = { config: { mainPayer: "Luiza", pix: "" }, expenses: [], payments: [] };
-  var mode = "loading"; // loading | shared | local
+  var S = { config: { mainPayer: "Luiza", pixes: {} }, expenses: [], payments: [] };
+  var mode = "loading";
   var readOnly = false;
   var db = null;
   var expanded = {};
@@ -292,13 +257,11 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     var p = String(key).split("-");
     if (p.length !== 3) return key;
     var d = new Date(+p[0], +p[1] - 1, +p[2]);
-    var txt;
     try {
       var wd = d.toLocaleDateString("pt-BR", { weekday: "long" });
       var dm = d.toLocaleDateString("pt-BR", { day: "numeric", month: "long" });
-      txt = dm + " (" + wd + ")";
-    } catch (e) { txt = key; }
-    return txt;
+      return dm + " (" + wd + ")";
+    } catch (e) { return key; }
   }
   function shortDate(key) {
     var p = String(key).split("-");
@@ -309,6 +272,25 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove("show"); }, 2200);
   }
   function validPerson(p) { return PEOPLE.indexOf(p) > -1; }
+  function ensurePixes() {
+    if (!S.config.pixes || typeof S.config.pixes !== "object") S.config.pixes = {};
+    PEOPLE.forEach(function (p) { if (typeof S.config.pixes[p] !== "string") S.config.pixes[p] = ""; });
+  }
+  function copyText(v, okMsg) {
+    function fallback() {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = v; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        toast(okMsg);
+      } catch (e) { toast("Selecione e copie manualmente"); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(v).then(function () { toast(okMsg); }, fallback);
+    } else fallback();
+  }
 
   /* ---------- cálculo ---------- */
   function shares(e) {
@@ -344,7 +326,7 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   function enqueue(fn) { queue = queue.then(fn).catch(function (err) { handleWriteError(err); }); return queue; }
   function handleWriteError(err) {
     if (err && (err.code === "invalid_argument" || err.code === "revoked")) {
-      readOnly = true; renderBanner();
+      readOnly = true; renderAll();
       toast("Sem permissão para editar. Peça acesso de colaborador.");
     } else { toast("Não foi possível salvar. Tente de novo."); }
   }
@@ -354,16 +336,25 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
       var raw = localStorage.getItem(LS_KEY);
       if (raw) {
         var o = JSON.parse(raw);
-        if (o && o.config) S.config = { mainPayer: validPerson(o.config.mainPayer) ? o.config.mainPayer : "Luiza", pix: String(o.config.pix || "") };
+        if (o && o.config) {
+          S.config.mainPayer = validPerson(o.config.mainPayer) ? o.config.mainPayer : "Luiza";
+          if (o.config.pixes && typeof o.config.pixes === "object") {
+            S.config.pixes = o.config.pixes;
+          } else if (typeof o.config.pix === "string" && o.config.pix) {
+            S.config.pixes = {};
+            S.config.pixes[S.config.mainPayer] = o.config.pix;
+          }
+        }
         if (o && Array.isArray(o.expenses)) S.expenses = o.expenses;
         if (o && Array.isArray(o.payments)) S.payments = o.payments;
       }
     } catch (e) {}
+    ensurePixes();
   }
   function newId() { return "i" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 
   function writeConfig() {
-    var data = { mainPayer: S.config.mainPayer, pix: S.config.pix };
+    var data = { mainPayer: S.config.mainPayer, pixes: S.config.pixes };
     if (mode === "shared") return enqueue(function () { return db.doc("config/main").set(data); });
     saveLocal(); return Promise.resolve();
   }
@@ -407,42 +398,51 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     else if (mode === "local") html = '<div class="banner info">Os dados ficam só neste aparelho. Para o grupo ver os mesmos valores, abra o link compartilhado pelo Claude.</div>';
     b.innerHTML = html;
   }
-  function renderHero(c) {
-    var main = S.config.mainPayer;
-    $("payerName").textContent = main;
-    var chips = $("payerChips");
-    chips.innerHTML = PEOPLE.map(function (p) {
-      return '<button type="button" class="chip" data-payer="' + esc(p) + '" aria-pressed="' + (p === main) + '">' + esc(p) + '</button>';
-    }).join("");
-    var pix = $("pixInput");
-    if (document.activeElement !== pix) pix.value = S.config.pix || "";
+  function renderSummary(c) {
     $("totalGasto").textContent = brl(c.total);
     var falta = 0;
-    PEOPLE.forEach(function (p) { if (p !== main && c.bal[p] < 0) falta += -c.bal[p]; });
+    PEOPLE.forEach(function (p) { if (c.bal[p] < 0) falta += -c.bal[p]; });
     $("totalFalta").textContent = brl(falta);
-    $("debtTitle").textContent = "Contas com " + main;
   }
-  function renderDebts(c) {
+  function renderMainChips() {
     var main = S.config.mainPayer;
-    var others = PEOPLE.filter(function (p) { return p !== main; });
-    if (mode === "loading") { $("debtList").innerHTML = '<div class="empty">Carregando…</div>'; return; }
-    var html = others.map(function (p) {
-      var b = c.bal[p], cls, status, amount;
-      if (b < 0) { cls = "debt"; status = "Deve a " + main; amount = brl(-b); }
-      else if (b > 0) { cls = "ok"; status = main + " deve a ela(e)"; amount = brl(b); }
-      else { cls = "ok"; status = "Quitado"; amount = brl(0); }
-      var open = !!expanded[p];
-      var h = '<div class="person ' + cls + (open ? " open" : "") + '">' +
-        '<button type="button" class="person-head" data-toggle="' + esc(p) + '" aria-expanded="' + open + '">' +
-        '<span class="avatar" aria-hidden="true">' + esc(p.charAt(0)) + '</span>' +
-        '<span class="grow"><span class="pname">' + esc(p) + '</span><br><span class="pstatus">' + esc(status) + '</span></span>' +
-        '<span class="amt">' + amount + '</span>' +
-        '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>' +
-        '</button>';
-      if (open) h += detailHtml(p, c, b, main);
-      return h + "</div>";
+    $("mainChips").innerHTML = PEOPLE.map(function (p) {
+      return '<button type="button" class="chip" data-main="' + esc(p) + '" aria-pressed="' + (p === main) + '">' + esc(p) + '</button>';
     }).join("");
-    $("debtList").innerHTML = html;
+  }
+  function renderPeople(c) {
+    if (mode === "loading") { $("peopleList").innerHTML = '<div class="empty">Carregando…</div>'; return; }
+    var main = S.config.mainPayer;
+    $("peopleList").innerHTML = PEOPLE.map(function (p) {
+      var b = c.bal[p] || 0;
+      var cls, status;
+      if (b < 0) { cls = "debt"; status = "Deve no total"; }
+      else if (b > 0) { cls = "credit"; status = "Tem a receber"; }
+      else { cls = "settled"; status = "Quites"; }
+      var open = !!expanded[p];
+      var pixVal = S.config.pixes[p] || "";
+      var sign = b > 0 ? "+" : b < 0 ? "−" : "";
+      var h = '<section class="person ' + cls + (open ? " open" : "") + '">' +
+        '<div class="pc-head">' +
+          '<span class="avatar" aria-hidden="true">' + esc(p.charAt(0)) + '</span>' +
+          '<div class="grow">' +
+            '<div class="pname">' + esc(p) + (p === main ? ' <small>· pagador padrão</small>' : '') + '</div>' +
+            '<div class="pstatus">' + esc(status) + '</div>' +
+          '</div>' +
+          '<div class="amt">' + sign + brl(Math.abs(b)) + '</div>' +
+        '</div>' +
+        '<div class="pc-body">' +
+          '<div class="pix-line">' +
+            '<input type="text" data-pix="' + esc(p) + '" value="' + esc(pixVal) + '" placeholder="Chave Pix de ' + esc(p) + '" autocomplete="off" spellcheck="false">' +
+            '<button class="btn-copy" type="button" data-copy="' + esc(p) + '">Copiar</button>' +
+          '</div>' +
+          '<button class="pc-toggle" type="button" data-toggle="' + esc(p) + '" aria-expanded="' + open + '">' +
+            (open ? "Ocultar detalhes" : "Ver detalhes") +
+          '</button>' +
+        '</div>';
+      if (open) h += detailHtml(p, c, b, main);
+      return h + '</section>';
+    }).join("");
   }
   function detailHtml(p, c, b, main) {
     var days = Object.keys(c.perDay).sort().reverse().filter(function (k) { return c.perDay[k][p] !== 0; });
@@ -462,7 +462,7 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
         h += '<div class="drow"><span class="pos">' + txt + " em " + esc(shortDate(x.day)) + '</span><button class="x" type="button" data-delpay="' + esc(x.id) + '" aria-label="Apagar pagamento">✕</button></div>';
       });
     }
-    if (b < 0) h += '<button class="btn block" type="button" data-pay="' + esc(p) + '" data-dir="in">Registrar pagamento de ' + esc(p) + "</button>";
+    if (b < 0) h += '<button class="btn block" type="button" data-pay="' + esc(p) + '" data-dir="in">Registrar pagamento de ' + esc(p) + " para " + esc(main) + "</button>";
     else if (b > 0) h += '<button class="btn block" type="button" data-pay="' + esc(p) + '" data-dir="out">Registrar que ' + esc(main) + " pagou " + esc(p) + "</button>";
     return h + "</div>";
   }
@@ -491,7 +491,7 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   }
   function renderAll() {
     var c = compute();
-    renderSync(); renderBanner(); renderHero(c); renderDebts(c); renderDays();
+    renderSync(); renderBanner(); renderSummary(c); renderMainChips(); renderPeople(c); renderDays();
   }
 
   /* ---------- sheets ---------- */
@@ -545,9 +545,8 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     if (!guardWrite()) return;
     var c = compute(), b = c.bal[person], main = S.config.mainPayer;
     payTarget = { person: person, dir: dir };
-    var amount = Math.abs(b);
     $("payWho").textContent = dir === "in" ? person + " manda para " + main : main + " manda para " + person;
-    $("payValue").value = (amount / 100).toFixed(2).replace(".", ",");
+    $("payValue").value = (Math.abs(b) / 100).toFixed(2).replace(".", ",");
     $("payErr").textContent = "";
     openSheet("ovPay");
     setTimeout(function () { $("payValue").select(); }, 50);
@@ -573,48 +572,52 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   $("tabDias").addEventListener("click", function () { showTab("dias"); });
   $("fabAdd").addEventListener("click", function () { openExpense(null); });
 
-  $("payerChange").addEventListener("click", function () {
-    var ch = $("payerChips"), hide = !ch.classList.contains("hidden");
-    ch.classList.toggle("hidden", hide);
-    $("payerChange").setAttribute("aria-expanded", String(!hide));
-    $("payerChange").textContent = hide ? "Trocar" : "Fechar";
-  });
-  $("payerChips").addEventListener("click", function (ev) {
-    var b = ev.target.closest("[data-payer]"); if (!b) return;
+  $("mainChips").addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-main]");
+    if (!b) return;
     if (!guardWrite()) return;
-    S.config.mainPayer = b.getAttribute("data-payer");
-    $("payerChips").classList.add("hidden");
-    $("payerChange").textContent = "Trocar"; $("payerChange").setAttribute("aria-expanded", "false");
+    S.config.mainPayer = b.getAttribute("data-main");
     renderAll(); writeConfig();
   });
-  function commitPix() {
-    var v = $("pixInput").value.trim();
-    if (v === (S.config.pix || "")) return;
-    if (!guardWrite()) { $("pixInput").value = S.config.pix || ""; return; }
-    S.config.pix = v; writeConfig().then(function () { toast("Chave Pix salva"); });
-  }
-  $("pixInput").addEventListener("change", commitPix);
-  $("pixInput").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("pixInput").blur(); } });
-  $("pixCopy").addEventListener("click", function () {
-    var v = $("pixInput").value.trim();
-    if (!v) { toast("Digite a chave Pix primeiro"); $("pixInput").focus(); return; }
-    function fallback() {
-      try { $("pixInput").select(); document.execCommand("copy"); toast("Chave copiada"); }
-      catch (e) { toast("Selecione e copie a chave manualmente"); }
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(v).then(function () { toast("Chave copiada"); }, fallback);
-    } else fallback();
+
+  /* pix: atualiza memória ao digitar, salva no blur/Enter */
+  $("peopleList").addEventListener("focusin", function (ev) {
+    var inp = ev.target.closest("[data-pix]");
+    if (inp) inp.dataset.original = inp.value;
+  });
+  $("peopleList").addEventListener("input", function (ev) {
+    var inp = ev.target.closest("[data-pix]");
+    if (!inp) return;
+    S.config.pixes[inp.getAttribute("data-pix")] = inp.value;
+  });
+  $("peopleList").addEventListener("change", function (ev) {
+    var inp = ev.target.closest("[data-pix]");
+    if (!inp) return;
+    var p = inp.getAttribute("data-pix");
+    if (inp.value === (inp.dataset.original || "")) return;
+    if (!guardWrite()) { inp.value = inp.dataset.original || ""; S.config.pixes[p] = inp.value; return; }
+    S.config.pixes[p] = inp.value;
+    writeConfig();
+    toast("Chave de " + p + " salva");
   });
 
-  $("debtList").addEventListener("click", function (ev) {
+  $("peopleList").addEventListener("click", function (ev) {
+    var copy = ev.target.closest("[data-copy]");
+    if (copy) {
+      var p = copy.getAttribute("data-copy");
+      var v = (S.config.pixes[p] || "").trim();
+      if (!v) { toast("Cadastre a chave de " + p + " primeiro"); return; }
+      copyText(v, "Chave de " + p + " copiada");
+      return;
+    }
     var t = ev.target.closest("[data-toggle]");
-    if (t) { var p = t.getAttribute("data-toggle"); expanded[p] = !expanded[p]; renderAll(); return; }
+    if (t) { var p2 = t.getAttribute("data-toggle"); expanded[p2] = !expanded[p2]; renderAll(); return; }
     var pay = ev.target.closest("[data-pay]");
     if (pay) { openPay(pay.getAttribute("data-pay"), pay.getAttribute("data-dir")); return; }
     var del = ev.target.closest("[data-delpay]");
     if (del && guardWrite() && confirm("Apagar este pagamento?")) removePayment(del.getAttribute("data-delpay"));
   });
+
   $("daysList").addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-edit]"); if (b) openExpense(b.getAttribute("data-edit"));
   });
@@ -647,12 +650,8 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   });
 
   /* ---------- inicialização ---------- */
-  function startLocal() {
-    mode = "local"; loadLocal(); renderAll();
-  }
-  function docsToList(snap) {
-    return snap.docs.map(function (d) { var o = d.data() || {}; o.id = d.id; return o; });
-  }
+  function startLocal() { mode = "local"; loadLocal(); renderAll(); }
+  function docsToList(snap) { return snap.docs.map(function (d) { var o = d.data() || {}; o.id = d.id; return o; }); }
   function startShared(dbNs, userNs) {
     db = dbNs; mode = "shared";
     if (userNs && typeof userNs.can === "function") {
@@ -661,7 +660,11 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     db.doc("config/main").onSnapshot(function (snap) {
       if (snap.exists) {
         var d = snap.data() || {};
-        S.config = { mainPayer: validPerson(d.mainPayer) ? d.mainPayer : "Luiza", pix: String(d.pix || "") };
+        var pixes = (d.pixes && typeof d.pixes === "object") ? d.pixes : {};
+        var mainPayer = validPerson(d.mainPayer) ? d.mainPayer : "Luiza";
+        if (!d.pixes && typeof d.pix === "string" && d.pix) { pixes = {}; pixes[mainPayer] = d.pix; }
+        S.config = { mainPayer: mainPayer, pixes: pixes };
+        ensurePixes();
       }
       renderAll();
     }, function () {});
@@ -676,6 +679,7 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     renderAll();
   }
 
+  ensurePixes();
   renderAll();
   if (window.claude && typeof window.claude.use === "function") {
     Promise.all([window.claude.use("db"), window.claude.use("user")]).then(function (r) {
