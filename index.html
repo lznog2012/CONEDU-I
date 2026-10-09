@@ -20,6 +20,8 @@
   --red-bg: #FDECEF;
   --green: #12805A;
   --green-bg: #E5F6EE;
+  --orange: #C2570C;
+  --orange-bg: #FFF1E3;
   --ticket: #14213D;
   --ticket-ink: #F4F7FB;
   --ticket-soft: #A9B6CE;
@@ -33,6 +35,7 @@
     --bg: #0C1322; --card: #151F36; --ink: #EAF0FA; --ink-soft: #93A3C1; --line: #26334F;
     --brand: #EAF0FA; --brand-ink: #0C1322;
     --red: #FF7A8D; --red-bg: #3A1B28; --green: #3FDCA4; --green-bg: #11332B;
+    --orange: #FFA94D; --orange-bg: #3A2614;
     --ticket: #1D2B4B; --ticket-ink: #F4F7FB; --ticket-soft: #9FB0D0;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
   }
@@ -41,6 +44,7 @@
   --bg: #0C1322; --card: #151F36; --ink: #EAF0FA; --ink-soft: #93A3C1; --line: #26334F;
   --brand: #EAF0FA; --brand-ink: #0C1322;
   --red: #FF7A8D; --red-bg: #3A1B28; --green: #3FDCA4; --green-bg: #11332B;
+  --orange: #FFA94D; --orange-bg: #3A2614;
   --ticket: #1D2B4B; --ticket-ink: #F4F7FB; --ticket-soft: #9FB0D0;
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
 }
@@ -94,13 +98,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* Lista de devedores */
 .section-title { font-size: 18px; font-weight: 700; margin: 0 2px 10px; }
 .person { background: var(--card); border-radius: 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 7px solid var(--line); overflow: hidden; }
-.person.debt { border-left-color: var(--red); background: var(--red-bg); }
+.person.debt { border-left-color: var(--orange); background: var(--orange-bg); }
 .person.ok { border-left-color: var(--green); background: var(--green-bg); }
 .person-head { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 12px; background: none; border: 0; text-align: left; }
 .avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 17px; background: var(--card); color: var(--ink); flex: none; font-family: "Bricolage Grotesque", sans-serif; }
 .pname { font-weight: 700; font-size: 17px; }
 .pstatus { font-size: 14px; font-weight: 600; }
-.debt .pstatus, .debt .amt { color: var(--red); }
+.debt .pstatus, .debt .amt { color: var(--orange); }
 .ok .pstatus, .ok .amt { color: var(--green); }
 .grow { flex: 1; min-width: 0; }
 .amt { font-family: "Bricolage Grotesque", sans-serif; font-size: 24px; font-weight: 800; white-space: nowrap; }
@@ -109,7 +113,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .detail { padding: 0 14px 14px; border-top: 1px dashed var(--line); }
 .detail h3 { font-size: 14px; color: var(--ink-soft); font-weight: 600; margin: 12px 0 6px; font-family: "Figtree", sans-serif; }
 .drow { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; font-size: 15px; }
-.drow .neg { color: var(--red); font-weight: 700; } .drow .pos { color: var(--green); font-weight: 700; }
+.drow .neg { color: var(--orange); font-weight: 700; } .drow .pos { color: var(--green); font-weight: 700; }
 .drow .x { background: none; border: 0; color: var(--ink-soft); padding: 0 6px; font-size: 16px; }
 .btn { background: var(--brand); color: var(--brand-ink); border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; font-size: 16px; }
 .btn.block { width: 100%; margin-top: 12px; }
@@ -430,13 +434,12 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   function renderSync() {
     var el = $("sync");
     if (mode === "shared") el.innerHTML = '<span class="dot"></span><span>Compartilhado com o grupo</span>';
-    else if (mode === "local") el.innerHTML = '<span class="dot off"></span><span>Só neste aparelho</span>';
+    else if (mode === "local") el.innerHTML = '';
     else el.innerHTML = '<span class="dot off"></span><span>Carregando…</span>';
   }
   function renderBanner() {
     var b = $("banner"), html = "";
     if (readOnly) html = '<div class="banner">Você está só visualizando. Peça para quem criou o site te dar acesso de colaborador para lançar gastos.</div>';
-    else if (mode === "local") html = '<div class="banner info">Os dados ficam só neste aparelho. Para o grupo ver os mesmos valores, abra o link compartilhado pelo Claude.</div>';
     b.innerHTML = html;
   }
   function renderHero(c) {
