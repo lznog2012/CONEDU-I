@@ -98,13 +98,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* Lista de devedores */
 .section-title { font-size: 18px; font-weight: 700; margin: 0 2px 10px; }
 .person { background: var(--card); border-radius: 16px; margin-bottom: 10px; box-shadow: var(--shadow); border-left: 7px solid var(--line); overflow: hidden; }
-.person.debt { border-left-color: var(--orange); background: var(--orange-bg); }
+.person.debt { border-left-color: var(--red); background: var(--red-bg); }
+.person.credit { border-left-color: var(--orange); background: var(--orange-bg); }
 .person.ok { border-left-color: var(--green); background: var(--green-bg); }
 .person-head { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 12px; background: none; border: 0; text-align: left; }
 .avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 17px; background: var(--card); color: var(--ink); flex: none; font-family: "Bricolage Grotesque", sans-serif; }
 .pname { font-weight: 700; font-size: 17px; }
 .pstatus { font-size: 14px; font-weight: 600; }
-.debt .pstatus, .debt .amt { color: var(--orange); }
+.debt .pstatus, .debt .amt { color: var(--red); }
+.credit .pstatus, .credit .amt { color: var(--orange); }
 .ok .pstatus, .ok .amt { color: var(--green); }
 .grow { flex: 1; min-width: 0; }
 .amt { font-family: "Bricolage Grotesque", sans-serif; font-size: 24px; font-weight: 800; white-space: nowrap; }
@@ -113,7 +115,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .detail { padding: 0 14px 14px; border-top: 1px dashed var(--line); }
 .detail h3 { font-size: 14px; color: var(--ink-soft); font-weight: 600; margin: 12px 0 6px; font-family: "Figtree", sans-serif; }
 .drow { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; font-size: 15px; }
-.drow .neg { color: var(--orange); font-weight: 700; } .drow .pos { color: var(--green); font-weight: 700; }
+.drow .neg { color: var(--red); font-weight: 700; } .drow .owe { color: var(--orange); font-weight: 700; }
+.how { background: var(--card); border-radius: 12px; padding: 4px 12px 10px; margin-top: 10px; }
+.how .drow { padding: 4px 0; font-size: 14px; }
+.how .sum { border-top: 1.5px solid var(--line); margin-top: 4px; padding-top: 8px; font-weight: 800; font-size: 16px; }
+.how .note { font-size: 13px; color: var(--ink-soft); margin-top: 6px; } .drow .pos { color: var(--green); font-weight: 700; }
 .drow .x { background: none; border: 0; color: var(--ink-soft); padding: 0 6px; font-size: 16px; }
 .btn { background: var(--brand); color: var(--brand-ink); border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; font-size: 16px; }
 .btn.block { width: 100%; margin-top: 12px; }
@@ -342,8 +348,8 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
   // bal[p] > 0: o principal deve a p. bal[p] < 0: p deve ao principal.
   function compute() {
     var main = S.config.mainPayer;
-    var bal = {}, perDay = {}, total = 0;
-    PEOPLE.forEach(function (p) { bal[p] = 0; });
+    var bal = {}, perDay = {}, total = 0, det = {};
+    PEOPLE.forEach(function (p) { bal[p] = 0; det[p] = { owes: 0, owed: 0, paidIn: 0, paidOut: 0 }; });
     function day(k) { if (!perDay[k]) { perDay[k] = {}; PEOPLE.forEach(function (p) { perDay[k][p] = 0; }); } return perDay[k]; }
     S.expenses.forEach(function (e) {
       if (!validPerson(e.payer) || !(e.cents > 0)) return;
@@ -354,19 +360,19 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
         // o principal pagou: cada participante deve a parte dele ao principal
         Object.keys(sh).forEach(function (p) {
           if (p === main) return;
-          bal[p] -= sh[p]; d[p] -= sh[p];
+          bal[p] -= sh[p]; d[p] -= sh[p]; det[p].owes += sh[p];
         });
       } else if (sh[main]) {
         // outra pessoa pagou e o principal participou: o principal deve a parte dele a quem pagou
-        bal[e.payer] += sh[main]; d[e.payer] += sh[main];
+        bal[e.payer] += sh[main]; d[e.payer] += sh[main]; det[e.payer].owed += sh[main];
       }
     });
     S.payments.forEach(function (x) {
       if (!validPerson(x.from) || !validPerson(x.to) || !(x.cents > 0)) return;
-      if (x.to === main && x.from !== main) bal[x.from] += x.cents;
-      else if (x.from === main && x.to !== main) bal[x.to] -= x.cents;
+      if (x.to === main && x.from !== main) { bal[x.from] += x.cents; det[x.from].paidIn += x.cents; }
+      else if (x.from === main && x.to !== main) { bal[x.to] -= x.cents; det[x.to].paidOut += x.cents; }
     });
-    return { bal: bal, perDay: perDay, total: total };
+    return { bal: bal, perDay: perDay, total: total, det: det };
   }
 
   /* ---------- persistência ---------- */
@@ -465,7 +471,7 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     var html = others.map(function (p) {
       var b = c.bal[p], cls, status, amount;
       if (b < 0) { cls = "debt"; status = "Deve a " + main; amount = brl(-b); }
-      else if (b > 0) { cls = "ok"; status = main + " deve a ela(e)"; amount = brl(b); }
+      else if (b > 0) { cls = "credit"; status = main + " deve a " + p; amount = brl(b); }
       else { cls = "ok"; status = "Quitado"; amount = brl(0); }
       var open = !!expanded[p];
       var h = '<div class="person ' + cls + (open ? " open" : "") + '">' +
@@ -487,8 +493,20 @@ label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px;
     if (!days.length) h += '<div class="drow"><span>Nenhum gasto ainda.</span></div>';
     days.forEach(function (k) {
       var v = c.perDay[k][p];
-      h += '<div class="drow"><span>' + esc(dayLabel(k)) + '</span><span class="' + (v < 0 ? "neg" : "pos") + '">' + (v < 0 ? "deve " + brl(-v) : "tem " + brl(v)) + "</span></div>";
+      h += '<div class="drow"><span>' + esc(dayLabel(k)) + '</span><span class="' + (v < 0 ? "neg" : "owe") + '">' + (v < 0 ? esc(p) + " deve " + brl(-v) : esc(main) + " deve " + brl(v)) + "</span></div>";
     });
+    var dt = c.det[p];
+    if (dt.owes || dt.owed || dt.paidIn || dt.paidOut) {
+      h += "<h3>Como chegamos nesse valor</h3><div class=\"how\">";
+      if (dt.owes) h += '<div class="drow"><span>' + esc(p) + " deve a " + esc(main) + " (gastos que " + esc(main) + " pagou)</span><span class=\"neg\">" + brl(dt.owes) + "</span></div>";
+      if (dt.owed) h += '<div class="drow"><span>' + esc(main) + " deve a " + esc(p) + " (gastos que " + esc(p) + " pagou)</span><span class=\"owe\">− " + brl(dt.owed) + "</span></div>";
+      if (dt.paidIn) h += '<div class="drow"><span>' + esc(p) + " já pagou a " + esc(main) + '</span><span class="pos">− ' + brl(dt.paidIn) + "</span></div>";
+      if (dt.paidOut) h += '<div class="drow"><span>' + esc(main) + " já pagou a " + esc(p) + '</span><span class="owe">+ ' + brl(dt.paidOut) + "</span></div>";
+      var resText = b < 0 ? esc(p) + " ainda deve " + brl(-b) + " a " + esc(main) : (b > 0 ? esc(main) + " ainda deve " + brl(b) + " a " + esc(p) : "Tudo quitado");
+      h += '<div class="drow sum"><span>Resta</span><span class="' + (b < 0 ? "neg" : (b > 0 ? "owe" : "pos")) + '">' + resText + "</span></div>";
+      if (dt.owes && dt.owed) h += '<div class="note">As duas dívidas se compensam: só a diferença precisa ser paga.</div>';
+      h += "</div>";
+    }
     var pays = S.payments.filter(function (x) { return (x.from === p && x.to === main) || (x.to === p && x.from === main); })
       .sort(function (a, b2) { return String(b2.day).localeCompare(String(a.day)); });
     if (pays.length) {
